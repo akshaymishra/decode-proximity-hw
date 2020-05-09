@@ -17,6 +17,8 @@
 #include "keystore.h"
 #include "ble_scan.h"
 
+#include "led.h"
+
 #define MAIN_QUEUE_SIZE     (8)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
 
@@ -53,6 +55,9 @@ int main(void)
     /* we need a message queue for the thread running the shell in order to
      * receive potentially fast incoming networking packets */
     msg_init_queue(_main_msg_queue, MAIN_QUEUE_SIZE);
+
+    /* init board LED */
+    LED_OFF(0);
 
     /* Global wolfSSL initialization */
     wolfSSL_Init();

@@ -25,7 +25,7 @@
 #define BROADCAST_KEY_LEN 13UL
 
 /* Bluetooth scan/adv timing (in milliseconds) */
-#define BLESCAN_INTERVAL 58000
+#define BLESCAN_INTERVAL 10000
 #define BLESCAN_DURATION 2000
 
 #endif

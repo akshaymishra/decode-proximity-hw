@@ -14,6 +14,7 @@
 #include "dp3t.h"
 #include "keystore.h"
 #include "contactstore.h"
+#include "led.h"
  
 
 static event_queue_t eq;
@@ -56,8 +57,22 @@ static void dp3t_print_entry(int *idx, nimble_scanlist_entry_t *e)
                 peer_ephid[13],
                 peer_ephid[14],
                 peer_ephid[15]); 
+
+        switch_led(e->last_rssi);
+
         cstore_add(0, 0, (uint8_t) ((0 - e->last_rssi) & 0xFF), (uint8_t *)peer_ephid); 
     }
+}
+
+//switch on led if RSSI is above a threshold
+void switch_led(int rssi_value) {
+    if (rssi_value > -72){
+            printf("Proximity Led On\n");
+            LED_ON(0);
+        } else {
+            printf("Proximity Led Off\n");
+            LED_OFF(0);
+        }
 }
 
 void dp3t_scanlist_print(void)
