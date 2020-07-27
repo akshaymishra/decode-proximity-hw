@@ -119,7 +119,8 @@ static int rekey(void)
     struct dp3t_config_store *sto, newsto;
     sys_random(newsto.key, SK_LEN);
     memcpy(newsto.signature, dp3t_config_signature, 4);
-    memcpy(newsto.key, newsto.key, SK_LEN);
+ //   memcpy(newsto.key, newsto.key, SK_LEN);
+    memmove(newsto.key, newsto.key, SK_LEN);
     newsto.age = 0;
     store_config(&newsto);
     /* Sanity check for the new configuration */

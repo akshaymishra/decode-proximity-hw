@@ -20,6 +20,7 @@
 static event_queue_t eq;
 static event_t blescan_evt;
 static event_timeout_t blescan_timeout_evt;
+void switch_led(int rssi_value);
 
 
 /*** SCAN ***/

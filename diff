@@ -1,0 +1,39 @@
+diff --git a/ble_scan.c b/ble_scan.c
+index 1a4f3a3..6a887aa 100644
+--- a/ble_scan.c
++++ b/ble_scan.c
+@@ -20,6 +20,7 @@
+ static event_queue_t eq;
+ static event_t blescan_evt;
+ static event_timeout_t blescan_timeout_evt;
++void switch_led(int rssi_value);
+ 
+ 
+ /*** SCAN ***/
+diff --git a/dp3t-config.h b/dp3t-config.h
+index f714059..32a60f5 100644
+--- a/dp3t-config.h
++++ b/dp3t-config.h
+@@ -18,7 +18,7 @@
+ 
+ 
+ /* Use-case DP3-T parameters */
+-#define TTL (180) // In minutes
++#define TTL (15) // In minutes
+ #define EPOCHS  (((24 * 60) / TTL) + 1)
+ #define RETENTION_PERIOD (14) // In days
+ #define BROADCAST_KEY "Broadcast key"
+diff --git a/keystore.c b/keystore.c
+index b6e63fa..03f3589 100644
+--- a/keystore.c
++++ b/keystore.c
+@@ -119,7 +119,8 @@ static int rekey(void)
+     struct dp3t_config_store *sto, newsto;
+     sys_random(newsto.key, SK_LEN);
+     memcpy(newsto.signature, dp3t_config_signature, 4);
+-    memcpy(newsto.key, newsto.key, SK_LEN);
++ //   memcpy(newsto.key, newsto.key, SK_LEN);
++    memmove(newsto.key, newsto.key, SK_LEN);
+     newsto.age = 0;
+     store_config(&newsto);
+     /* Sanity check for the new configuration */

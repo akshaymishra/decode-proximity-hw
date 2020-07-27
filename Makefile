@@ -51,6 +51,12 @@ USEMODULE += wolfssl_dtls
 #USEMODULE += wolfcrypt_rsa wolfcrypt_dh
 USEMODULE += wolfcrypt_hmac wolfcrypt_aes_ctr wolfcrypt_aes
 USEMODULE += wolfssl_psk
+
+USEMODULE += xtimer
+FEATURES_REQUIRED += periph_rtc
+USEMODULE += at25xxx
+USEMODULE += embunit
+
 #USEMODULE += wolfcrypt-test
 
 # Uncomment the following line to add debug symbols
