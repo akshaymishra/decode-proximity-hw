@@ -20,10 +20,16 @@
 #include "ble_scan.h"
 #include "periph/rtc.h"
 
-#include "embUnit.h"
+#ifdef EEPROM
 
-#include "at25xxx.h"
-#include "at25xxx_params.h"
+ #include "embUnit.h"
+
+ #include "at25xxx.h"
+ #include "at25xxx_params.h"
+
+ static at25xxx_t dev;
+
+#endif
 
 
 #include "led.h"
@@ -77,6 +83,8 @@ int main(void)
 
 	/* The time parameter has to come from app*/
     rtc_set_time(&RTC_time);
+
+#ifdef EEPROM
 	/* our eeprom init */
     at25xxx_init(&dev, &at25xxx_params[0]);
 /*
@@ -85,6 +93,8 @@ int main(void)
     at25xxx_read(&dev, AT25XXX_PARAM_PAGE_SIZE - 5, data_out, sizeof(data_out));
 
 */
+
+#endif
 
     /* we need a message queue for the thread running the shell in order to
      * receive potentially fast incoming networking packets */
