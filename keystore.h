@@ -22,4 +22,5 @@ beacons_t *dp3t_generate_beacons(sk_t key, int day);
 
 int dp3t_shellcmd_testvec(int argc, char **argv);
 int dp3t_shellcmd_rekey(int argc, char **argv);
+void dp3t_print_ephids(void);
 #endif

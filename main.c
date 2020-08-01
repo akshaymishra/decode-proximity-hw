@@ -36,7 +36,7 @@
 
 #define MAIN_QUEUE_SIZE     (8)
 
-bool Debug = 0;
+bool Debug = 1;
 
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
 
@@ -89,6 +89,12 @@ static int enable_debug_logs(int argc, char **argv)
     return 0;
 }
 
+static int print_ephids(int argc, char **argv)
+{
+    dp3t_print_ephids();
+    return 0;
+}
+
 static const shell_command_t shell_commands[] = {
     { "testvec", "print test vectors", dp3t_shellcmd_testvec },
     { "rekey", "regenerate DP3T secure key", dp3t_shellcmd_rekey },
@@ -96,6 +102,7 @@ static const shell_command_t shell_commands[] = {
     { "wolftest", "Perform wolfcrypt porting test", wolftest },
 #endif
     {"debug_log", "Turn ON/OFF debug logs", enable_debug_logs},
+    {"print_ephids", "Print Ephemeral IDs", print_ephids},
     { NULL, NULL, NULL }
 };
 
