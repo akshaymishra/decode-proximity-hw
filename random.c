@@ -26,6 +26,8 @@
 #define TRNG_EV_VALRDY   (*(volatile uint32_t *)(TRNG_BASE + 0x100))
 #define TRNG_VALUE       (*(volatile uint32_t *)(TRNG_BASE + 0x508))
 
+extern bool Debug;
+
 void sys_random(uint8_t *buf, int len)
 {
     uint8_t val;
@@ -36,11 +38,14 @@ void sys_random(uint8_t *buf, int len)
     /* Start TRNG */
     TRNG_TASKS_START = 1;
     for (i = 0; i < len; i++) {
+        if (Debug) printf("Generating random #%d", i);
         /* Wait until value ready */
         while (TRNG_EV_VALRDY == 0)
             ;
-        buf[i] = (uint8_t)(TRNG_VALUE & 0x000000FF);
         TRNG_EV_VALRDY = 0;
+        buf[i] = (uint8_t)(TRNG_VALUE & 0x000000FF);
+        if (Debug) printf(":%02X\r\n", buf[i]);
+        TRNG_TASKS_START = 1;
     }
     TRNG_TASKS_STOP |= 1;
 }
