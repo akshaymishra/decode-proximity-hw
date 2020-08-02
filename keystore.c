@@ -13,6 +13,7 @@
 #include "dp3t.h"
 #include "random.h"
 #include "nvmc.h"
+#include "utils.h"
 
 static uint8_t SKT_0[SK_LEN] = {};
 static int keystore_initialized = 0;
@@ -35,15 +36,6 @@ struct __attribute__((packed)) dp3t_config_store {
     sk_t     key;      /* oldest key stored */
     uint32_t age;      /* age in days */
 };
-
-static void print_hex(const uint8_t *x, int len)
-{
-    int i;
-    for(i = 0; i < len; i++) {
-        printf("%02x",x[i]);
-    }
-    printf("\n");
-}
 
 static void print_ephid(const uint8_t *x)
 {
@@ -101,6 +93,7 @@ static struct dp3t_config_store *load_config(void)
 
 static void store_config(struct dp3t_config_store *sto)
 {
+    printf("Starting to store DP-3T to NVMC\n");
     flash_erase(CONFIG_FLASH_ADDR, FLASH_PAGE_SIZE);
     flash_write(CONFIG_FLASH_ADDR, (uint8_t *)sto, sizeof(struct dp3t_config_store));
     printf("DP-3T configuration stored to NVMC\n");
@@ -119,8 +112,6 @@ static int rekey(void)
     struct dp3t_config_store *sto, newsto;
     sys_random(newsto.key, SK_LEN);
     memcpy(newsto.signature, dp3t_config_signature, 4);
- //   memcpy(newsto.key, newsto.key, SK_LEN);
-    memmove(newsto.key, newsto.key, SK_LEN);
     newsto.age = 0;
     store_config(&newsto);
     /* Sanity check for the new configuration */
@@ -154,6 +145,29 @@ int dp3t_start(void)
     ret = generate_beacons(beacons, EPOCHS, sto->key, sto->age, TTL, broadcast_key, broadcast_key_len); 
     if (ret != 0)
         return -2;
+
+    if(Debug)
+    {
+#if 0
+        printf("***********\r\n");
+        printf("Broadcast key len: %ld\r\n", broadcast_key_len);
+        printf("Broadcast key: %s\r\n", broadcast_key);
+
+        printf("STO age: %ld\r\n", sto->age);
+        printf("STO key: ");
+        print_sk(sto->key);
+        printf("\r\n");
+
+        printf("Beacon epochs: %ld\r\n", beacons->epochs);
+        printf("Broadcast len: %ld\r\n", beacons->broadcast_len);
+        printf("Beacon broadcast: ");
+        print_hex((uint8_t*)beacons->broadcast, 32);
+        printf("\r\n");
+        printf("EPHIDs\r\n");
+        dp3t_print_ephids();
+#endif
+    }
+
     keystore_initialized = 1;
     return 0;
 }

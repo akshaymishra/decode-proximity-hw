@@ -9,6 +9,7 @@
 #ifndef DP3T_CONFIG_H
 #define DP3T_CONFIG_H
 #include <stdint.h>
+#include <stdbool.h>
 
 /* SK / EPHID / SHA base parameters
  */
@@ -27,5 +28,7 @@
 /* Bluetooth scan/adv timing (in milliseconds) */
 #define BLESCAN_INTERVAL 10000
 #define BLESCAN_DURATION 2000
+
+extern bool Debug;
 
 #endif

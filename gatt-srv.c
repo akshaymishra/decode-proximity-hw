@@ -22,6 +22,7 @@
 #include "dp3t.h"
 #include "random.h"
 #include "keystore.h"
+#include "utils.h"
 
 #define HRS_FLAGS_DEFAULT       (0x01)      /* 16-bit BPM value */
 #define SENSOR_LOCATION         (0x02)      /* wrist sensor */
@@ -149,6 +150,8 @@ int gatt_server(void)
     ble_gatts_start();
     sys_random(addr, 6);
     ble_hs_id_set_rnd(addr);
+
+    if(Debug) print_hex(addr, 6);
 
     /* configure and set the advertising data */
     bluetil_ad_t ad;
