@@ -96,6 +96,11 @@ static int _devinfo_handler(uint16_t conn_handle, uint16_t attr_handle,
             //printf("[READ] device information service: model number value");
             str = _model_number;
             break;
+
+//TODO: These Device info characteristics need to be handled
+        case BLE_GATT_CHAR_SERIAL_NUMBER_STR:
+        case BLE_GATT_CHAR_FW_REV_STR:
+        case BLE_GATT_CHAR_HW_REV_STR:
         default:
             return BLE_ATT_ERR_UNLIKELY;
     }
