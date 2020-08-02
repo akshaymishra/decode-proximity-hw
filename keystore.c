@@ -25,7 +25,7 @@ static uint32_t broadcast_key_len = BROADCAST_KEY_LEN;
 
 #define BEACONS_OBJ_SIZE (sizeof(beacons_t) + sizeof(beacon_t) * 16)
 static uint8_t local_beacons_buffer[BEACONS_OBJ_SIZE];
-static beacons_t *beacons = (beacons_t *)(local_beacons_buffer);
+beacons_t *beacons = (beacons_t *)(local_beacons_buffer);
 
 #define CONFIG_FLASH_ADDR ((512 - 4)  * (1024)) /* Last sector of flash considering a 512KB boundary */
 
@@ -36,26 +36,6 @@ struct __attribute__((packed)) dp3t_config_store {
     sk_t     key;      /* oldest key stored */
     uint32_t age;      /* age in days */
 };
-
-static void print_ephid(const uint8_t *x)
-{
-    print_hex(x, EPHID_LEN);
-}
-
-static void print_sk(const uint8_t *x)
-{
-    print_hex(x, SK_LEN);
-}
-
-
-void dp3t_print_ephids(void)
-{
-    int i;
-    for (i = 0; i < EPOCHS; i++) {
-        printf("[ %03d ] ", i);
-        print_ephid(beacons->ephids[i]);
-    }
-}
 
 
 beacons_t *dp3t_generate_beacons(sk_t key, int day)
