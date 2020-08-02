@@ -13,6 +13,7 @@
 #include "shell.h"
 #include "msg.h"
 
+#include "utils.h"
 #include "dp3t-config.h"
 #include "dp3t.h"
 #include "keystore.h"
@@ -31,8 +32,8 @@
 
 #endif
 
-
 #include "led.h"
+
 
 #define MAIN_QUEUE_SIZE     (8)
 
@@ -91,7 +92,7 @@ static int enable_debug_logs(int argc, char **argv)
 
 static int print_ephids(int argc, char **argv)
 {
-    dp3t_print_ephids();
+    print_dp3t_ephids();
     return 0;
 }
 

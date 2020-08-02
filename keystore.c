@@ -45,7 +45,7 @@ beacons_t *dp3t_generate_beacons(sk_t key, int day)
     ret = generate_beacons(beacons, EPOCHS, key, day, TTL, broadcast_key, broadcast_key_len); 
     if (ret != 0)
         return NULL;
-    dp3t_print_ephids();
+    print_dp3t_ephids();
     return beacons;
 }
 

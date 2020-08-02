@@ -21,7 +21,7 @@ void print_sk(const uint8_t *x)
 }
 
 
-void dp3t_print_ephids(void)
+void print_dp3t_ephids(void)
 {
     int i;
     for (i = 0; i < EPOCHS; i++) {
