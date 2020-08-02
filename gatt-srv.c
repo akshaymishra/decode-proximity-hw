@@ -29,7 +29,7 @@
 #define UPDATE_INTERVAL         (250U * US_PER_MS)
 
 static const char *device_name = "DP3T";
-static const char *_manufacturer_name = "Dyne.org";
+static const char *_manufacturer_name = "DSPWorks";
 static const char *_model_number = "1";
 
 static event_queue_t _eq;
@@ -154,7 +154,12 @@ int gatt_server(void)
     addr[5] &= 0x3F;
     ble_hs_id_set_rnd(addr);
 
-    if(Debug) print_hex(addr, 6);
+    if(Debug) 
+    {
+        printf("Device address(byte order reversed): ");
+        print_hex(addr, 6);
+        printf("\r\n");
+    }
 
     /* configure and set the advertising data */
     bluetil_ad_t ad;
