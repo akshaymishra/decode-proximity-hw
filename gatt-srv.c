@@ -149,6 +149,9 @@ int gatt_server(void)
     /* reload the GATT server to link our added services */
     ble_gatts_start();
     sys_random(addr, 6);
+
+    /*Make the address non-resolvable static. Upper 2-bits 0.*/
+    addr[5] &= 0x3F;
     ble_hs_id_set_rnd(addr);
 
     if(Debug) print_hex(addr, 6);
