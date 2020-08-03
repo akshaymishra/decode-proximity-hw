@@ -57,6 +57,7 @@ FEATURES_REQUIRED += periph_rtc
 USEMODULE += at25xxx
 USEMODULE += embunit
 
+USEMODULE += stdio_rtt
 #USEMODULE += wolfcrypt-test
 
 # Uncomment the following line to add debug symbols

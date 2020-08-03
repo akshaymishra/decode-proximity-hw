@@ -13,6 +13,7 @@
 #include "shell.h"
 #include "msg.h"
 
+#include "utils.h"
 #include "dp3t-config.h"
 #include "dp3t.h"
 #include "keystore.h"
@@ -31,10 +32,13 @@
 
 #endif
 
-
 #include "led.h"
 
+
 #define MAIN_QUEUE_SIZE     (8)
+
+bool Debug = 1;
+
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
 
 extern int dtls_client(int argc, char **argv);
@@ -66,12 +70,40 @@ struct tm RTC_time = {
 
 extern int gatt_server(void);
 
+static int enable_debug_logs(int argc, char **argv)
+{
+    if(argc == 2)
+    {
+        if(argv[1])
+        {
+            printf("Debug logs enabled\r\n");
+            Debug = 1;
+        }
+        else
+        {
+            printf("Debug Logs disabled\r\n");
+            Debug = 0;
+        }
+    }
+    else
+        printf("Useage: debug_log <0-disable 1-enable>\r\n");
+    return 0;
+}
+
+static int print_ephids(int argc, char **argv)
+{
+    print_dp3t_ephids();
+    return 0;
+}
+
 static const shell_command_t shell_commands[] = {
     { "testvec", "print test vectors", dp3t_shellcmd_testvec },
     { "rekey", "regenerate DP3T secure key", dp3t_shellcmd_rekey },
 #ifdef MODULE_WOLFCRYPT_TEST
     { "wolftest", "Perform wolfcrypt porting test", wolftest },
 #endif
+    {"debug_log", "Turn ON/OFF debug logs", enable_debug_logs},
+    {"print_ephids", "Print Ephemeral IDs", print_ephids},
     { NULL, NULL, NULL }
 };
 

@@ -22,13 +22,14 @@
 #include "dp3t.h"
 #include "random.h"
 #include "keystore.h"
+#include "utils.h"
 
 #define HRS_FLAGS_DEFAULT       (0x01)      /* 16-bit BPM value */
 #define SENSOR_LOCATION         (0x02)      /* wrist sensor */
 #define UPDATE_INTERVAL         (250U * US_PER_MS)
 
 static const char *device_name = "DP3T";
-static const char *_manufacturer_name = "Dyne.org";
+static const char *_manufacturer_name = "DSPWorks";
 static const char *_model_number = "1";
 
 static event_queue_t _eq;
@@ -95,6 +96,11 @@ static int _devinfo_handler(uint16_t conn_handle, uint16_t attr_handle,
             //printf("[READ] device information service: model number value");
             str = _model_number;
             break;
+
+//TODO: These Device info characteristics need to be handled
+        case BLE_GATT_CHAR_SERIAL_NUMBER_STR:
+        case BLE_GATT_CHAR_FW_REV_STR:
+        case BLE_GATT_CHAR_HW_REV_STR:
         default:
             return BLE_ATT_ERR_UNLIKELY;
     }
@@ -148,7 +154,17 @@ int gatt_server(void)
     /* reload the GATT server to link our added services */
     ble_gatts_start();
     sys_random(addr, 6);
+
+    /*Make the address non-resolvable static. Upper 2-bits 0.*/
+    addr[5] &= 0x3F;
     ble_hs_id_set_rnd(addr);
+
+    if(Debug) 
+    {
+        printf("Device address(byte order reversed): ");
+        print_hex(addr, 6);
+        printf("\r\n");
+    }
 
     /* configure and set the advertising data */
     bluetil_ad_t ad;
